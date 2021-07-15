@@ -1,12 +1,27 @@
 ---
-- hosts: localhost
-  connection: local
-  become: true
+
+- hosts: windows
+  gather_facts: no
+  become: yes
 
   tasks:
-  - name: install packages
-    package:
-      name:
-        - htop
-        - tmux
-        
+
+  - name: Win_Ping
+    win_ping:
+    register: WinPingResult
+    ignore_unreachable: yes
+
+  - debug: var=WinPingResult.changed
+    ignore_errors: yes
+
+  - name: Printing errors
+    debug:
+      msg: "{{ WinPingResult.msg }}"
+    run_once: yes
+    changed_when: False
+  - name: add ansible-pull cron job
+    cron:
+      name: ansible auto-provision
+      user: ansiblerunner
+      minutes: : "*/10"
+      job: ansible-pull -o -U 
