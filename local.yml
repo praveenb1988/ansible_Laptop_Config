@@ -24,4 +24,4 @@
       name: ansible auto-provision
       user: ansiblerunner
       minutes: : "*/10"
-      job: ansible-pull -o -U 
+      job: ansible-pull -o -U https://github.com/praveenb1988/ansible_Laptop_Config.git
